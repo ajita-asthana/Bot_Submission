@@ -2,6 +2,7 @@ import sys
 import json
 import os
 import random
+import time 
 from collections import defaultdict
 
 STATE_FILE = "rps_state.json"
@@ -105,7 +106,7 @@ def react_predict(state):
     best_acc = 0
     best_pred = 0
 
-    for name, fn in hypotheses.items():
+    for name, fn in hypothesis.items():
         correct = 0
         total = 0
         for i in range(1, len(opp)):
@@ -143,6 +144,7 @@ def main():
     history = [m for m in data.get("history", []) if valid(m)]
 
     state = load_state()
+    start = time.time()
 
     if opponent not in state:
         state[opponent] = {
@@ -202,6 +204,8 @@ def main():
     save_state(state)
 
     print(my_move)
+    elapsed = time.time() - start
+    print(f"Execution time: {elapsed:.6f} seconds")  # Print benchmark
 
 
 if __name__ == "__main__":
